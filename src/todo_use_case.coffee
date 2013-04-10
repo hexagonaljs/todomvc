@@ -1,23 +1,16 @@
 class CompleteTasksUseCase
   constructor: ->
     @todoTasks = []
-    @filter = "all"
 
   completedTasks: => @todoTasks.filter (task) -> task.completed
   remainingTasks: => @todoTasks.filter (task) -> not task.completed
 
-  filteredTasks: =>
-    switch @filter
-      when "all" then @todoTasks
-      when "active" then @remainingTasks()
-      when "completed" then @completedTasks()
-
   setInitialTasks: (tasks) =>
     @todoTasks = tasks
 
-  selectFilter: (@filter) =>
-
-  showFiltered: =>
+  showAll: =>
+  showActive: =>
+  showCompleted: =>
 
   addNewTask: (task) =>
     @todoTasks.push(task)

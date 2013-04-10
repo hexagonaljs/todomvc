@@ -2,9 +2,6 @@ class WebGui
   constructor: ->
     $("#new-todo").keypress((event) => @keyPressed(event))
     $("#toggle-all").click( => @completeAllTasksClicked())
-    $("#all-tasks").click => @allTasksClicked()
-    $("#active-tasks").click => @remainingTasksClicked()
-    $("#completed-tasks").click => @completedTasksClicked()
     @taskElements = []
 
   createElementFor: (task, templateId) =>
@@ -87,8 +84,12 @@ class WebGui
     moreThanOne = remaining > 1
     data = {remaining: remaining, moreThanOne: moreThanOne, completed: completed}
     html = template(data)
-    $("#todo-count, #clear-completed").remove()
-    $("#footer").append(html)
+    element = $(html)
+    element.find("#all-tasks").click => @allTasksClicked()
+    element.find("#active-tasks").click => @remainingTasksClicked()
+    element.find("#completed-tasks").click => @completedTasksClicked()
+    console.log("here")
+    $("#footer").html(element)
     $("#clear-completed").click => @clearCompletedClicked()
 
   allTasksClicked: =>
@@ -100,6 +101,4 @@ class WebGui
     console.log("gui.clearCompleted")
     tasks.each (task) -> @deleteTask(task)
 
-  selectFilter: (name) =>
-    $("#filters a").removeClass("selected")
-    $("##{name}-tasks").addClass("selected")
+

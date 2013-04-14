@@ -10,13 +10,16 @@ WebGlue = (function() {
     this.statsView = statsView;
     this.storage = storage;
     this.routingAdapter = routingAdapter;
+    this.routingGlue = __bind(this.routingGlue, this);
+
     this.statsViewGlue = __bind(this.statsViewGlue, this);
 
     this.todoListViewGlue = __bind(this.todoListViewGlue, this);
 
     this.todoListViewGlue();
     this.statsViewGlue();
-    Before(this.useCase, 'showAll', function() {
+    this.routingGlue();
+    After(this.useCase, 'start', function() {
       return _this.useCase.setInitialTasks(_this.storage.getTasks());
     });
     AfterAll(this.useCase, ['addNewTask', 'updateTaskContent', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion'], function() {
@@ -55,7 +58,7 @@ WebGlue = (function() {
 
   WebGlue.prototype.statsViewGlue = function() {
     var _this = this;
-    AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
+    AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll', 'showCompleted', 'showActive'], function() {
       return _this.statsView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
     });
     After(this.statsView, 'allTasksClicked', function() {
@@ -78,6 +81,28 @@ WebGlue = (function() {
     });
     return After(this.useCase, 'showActive', function() {
       return _this.statsView.selectActive();
+    });
+  };
+
+  WebGlue.prototype.routingGlue = function() {
+    var _this = this;
+    After(this.routingAdapter, "showAll", function() {
+      return _this.useCase.showAll();
+    });
+    After(this.routingAdapter, "showCompleted", function() {
+      return _this.useCase.showCompleted();
+    });
+    After(this.routingAdapter, "showActive", function() {
+      return _this.useCase.showActive();
+    });
+    After(this.useCase, "showAll", function() {
+      return _this.routingAdapter.setUrlToAll();
+    });
+    After(this.useCase, "showActive", function() {
+      return _this.routingAdapter.setUrlToActive();
+    });
+    return After(this.useCase, "showCompleted", function() {
+      return _this.routingAdapter.setUrlToCompleted();
     });
   };
 

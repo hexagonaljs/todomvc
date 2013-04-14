@@ -33,8 +33,12 @@ CompleteTasksUseCase = (function() {
     this.remainingTasks = __bind(this.remainingTasks, this);
 
     this.completedTasks = __bind(this.completedTasks, this);
+
+    this.start = __bind(this.start, this);
     this.todoTasks = [];
   }
+
+  CompleteTasksUseCase.prototype.start = function() {};
 
   CompleteTasksUseCase.prototype.completedTasks = function() {
     return this.todoTasks.filter(function(task) {

@@ -2,7 +2,8 @@ class WebGlue
   constructor: (@useCase, @todoListView, @statsView, @storage, @routingAdapter)->
     @todoListViewGlue()
     @statsViewGlue()
-    Before(@useCase, 'showAll',  => @useCase.setInitialTasks(@storage.getTasks()))
+    @routingGlue()
+    After(@useCase, 'start',  => @useCase.setInitialTasks(@storage.getTasks()))
     AfterAll(@useCase,
             [
              'addNewTask',
@@ -42,6 +43,8 @@ class WebGlue
         'completeAllTasks',
         'toggleTaskCompletion',
         'showAll',
+        'showCompleted',
+        'showActive'
       ],
         => @statsView.showStats(@useCase.remainingTasks().length, @useCase.completedTasks().length))
 
@@ -54,4 +57,11 @@ class WebGlue
     After(@useCase, 'showAll', => @statsView.selectAll())
     After(@useCase, 'showActive', => @statsView.selectActive())
 
+  routingGlue: =>
+    After(@routingAdapter, "showAll", => @useCase.showAll())
+    After(@routingAdapter, "showCompleted", => @useCase.showCompleted())
+    After(@routingAdapter, "showActive", => @useCase.showActive())
+    After(@useCase, "showAll", => @routingAdapter.setUrlToAll())
+    After(@useCase, "showActive", => @routingAdapter.setUrlToActive())
+    After(@useCase, "showCompleted", => @routingAdapter.setUrlToCompleted())
 

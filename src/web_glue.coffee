@@ -1,10 +1,10 @@
 class WebGlue
-  constructor: (@useCase, @gui, @storage)->
-    AutoBind(@gui, @useCase)
-    After(@gui, 'enterKeyPressed', (content) => @useCase.addNewTask(new Task(content)))
-    After(@useCase, 'addNewTask', @gui.addNewTask)
+  constructor: (@useCase, @todoListView, @storage)->
+    AutoBind(@todoListView, @useCase)
+    After(@todoListView, 'enterKeyPressed', (content) => @useCase.addNewTask(new Task(content)))
+    After(@useCase, 'addNewTask', @todoListView.addNewTask)
     Before(@useCase, 'showAll',  => @useCase.setInitialTasks(@storage.getTasks()))
-    After(@useCase, 'showAll',  => @gui.showTasks(@useCase.todoTasks))
+    After(@useCase, 'showAll',  => @todoListView.showTasks(@useCase.todoTasks))
     AfterAll(@useCase,
             [
              'addNewTask',
@@ -15,18 +15,18 @@ class WebGlue
             ],
             => @storage.set("tasks", @useCase.todoTasks))
 
-    After(@useCase, 'deleteTask', @gui.deleteTask)
+    After(@useCase, 'deleteTask', @todoListView.deleteTask)
 
 
-    After(@useCase, 'completeTask', @gui.completeTask)
-    After(@useCase, 'uncompleteTask', @gui.uncompleteTask)
+    After(@useCase, 'completeTask', @todoListView.completeTask)
+    After(@useCase, 'uncompleteTask', @todoListView.uncompleteTask)
 
 
-    After(@useCase, 'editTaskContent', @gui.editTaskContent)
-    After(@gui, 'taskContentDoubleClicked', @useCase.editTaskContent)
+    After(@useCase, 'editTaskContent', @todoListView.editTaskContent)
+    After(@todoListView, 'taskContentDoubleClicked', @useCase.editTaskContent)
 
-    After(@useCase, 'updateTaskContent', @gui.updateTaskContent)
-    After(@gui, 'enterKeyPressedWhenEditing', @useCase.updateTaskContent)
+    After(@useCase, 'updateTaskContent', @todoListView.updateTaskContent)
+    After(@todoListView, 'enterKeyPressedWhenEditing', @useCase.updateTaskContent)
 
     AfterAll(@useCase,
       [
@@ -36,16 +36,16 @@ class WebGlue
         'toggleTaskCompletion',
         'showAll',
       ],
-        => @gui.showStats(@useCase.remainingTasks().length, @useCase.completedTasks().length))
+        => @todoListView.showStats(@useCase.remainingTasks().length, @useCase.completedTasks().length))
 
-    After(@gui, 'allTasksClicked', => @useCase.showAll())
-    After(@gui, 'completedTasksClicked', => @useCase.showCompleted())
-    After(@gui, 'remainingTasksClicked', => @useCase.showActive())
+    After(@todoListView, 'allTasksClicked', => @useCase.showAll())
+    After(@todoListView, 'completedTasksClicked', => @useCase.showCompleted())
+    After(@todoListView, 'remainingTasksClicked', => @useCase.showActive())
 
-    After(@useCase, 'showActive', => @gui.showTasks(@useCase.remainingTasks()))
-    After(@useCase, 'showCompleted', => @gui.showTasks(@useCase.completedTasks()))
+    After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
+    After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
 
-    After(@gui, 'clearCompletedClicked', => @useCase.clearCompleted())
+    After(@todoListView, 'clearCompletedClicked', => @useCase.clearCompleted())
 
     LogAll(@useCase, "UseCase")
-    LogAll(@gui, "Gui")
+    LogAll(@todoListView, "TodoListView")

@@ -1,4 +1,4 @@
-class WebGui
+class TodoListView
   constructor: ->
     $("#new-todo").keypress((event) => @keyPressed(event))
     $("#toggle-all").click( => @completeAllTasksClicked())
@@ -88,7 +88,6 @@ class WebGui
     element.find("#all-tasks").click => @allTasksClicked()
     element.find("#active-tasks").click => @remainingTasksClicked()
     element.find("#completed-tasks").click => @completedTasksClicked()
-    console.log("here")
     $("#footer").html(element)
     $("#clear-completed").click => @clearCompletedClicked()
 

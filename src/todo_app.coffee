@@ -8,9 +8,9 @@ class WebTodoApp
   constructor: ->
     useCase = new CompleteTasksUseCase()
     window.useCase = useCase
-    gui = new WebGui()
+    todoListView = new TodoListView()
     localStorage = new LocalStorage("todo_app")
-    glue = new WebGlue(useCase, gui, localStorage)
+    glue = new WebGlue(useCase, todoListView, localStorage)
     useCase.showAll()
 
 new WebTodoApp()

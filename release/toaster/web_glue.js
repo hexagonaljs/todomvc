@@ -2,55 +2,55 @@ var WebGlue;
 
 WebGlue = (function() {
 
-  function WebGlue(useCase, gui, storage) {
+  function WebGlue(useCase, todoListView, storage) {
     var _this = this;
     this.useCase = useCase;
-    this.gui = gui;
+    this.todoListView = todoListView;
     this.storage = storage;
-    AutoBind(this.gui, this.useCase);
-    After(this.gui, 'enterKeyPressed', function(content) {
+    AutoBind(this.todoListView, this.useCase);
+    After(this.todoListView, 'enterKeyPressed', function(content) {
       return _this.useCase.addNewTask(new Task(content));
     });
-    After(this.useCase, 'addNewTask', this.gui.addNewTask);
+    After(this.useCase, 'addNewTask', this.todoListView.addNewTask);
     Before(this.useCase, 'showAll', function() {
       return _this.useCase.setInitialTasks(_this.storage.getTasks());
     });
     After(this.useCase, 'showAll', function() {
-      return _this.gui.showTasks(_this.useCase.todoTasks);
+      return _this.todoListView.showTasks(_this.useCase.todoTasks);
     });
     AfterAll(this.useCase, ['addNewTask', 'updateTaskContent', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion'], function() {
       return _this.storage.set("tasks", _this.useCase.todoTasks);
     });
-    After(this.useCase, 'deleteTask', this.gui.deleteTask);
-    After(this.useCase, 'completeTask', this.gui.completeTask);
-    After(this.useCase, 'uncompleteTask', this.gui.uncompleteTask);
-    After(this.useCase, 'editTaskContent', this.gui.editTaskContent);
-    After(this.gui, 'taskContentDoubleClicked', this.useCase.editTaskContent);
-    After(this.useCase, 'updateTaskContent', this.gui.updateTaskContent);
-    After(this.gui, 'enterKeyPressedWhenEditing', this.useCase.updateTaskContent);
+    After(this.useCase, 'deleteTask', this.todoListView.deleteTask);
+    After(this.useCase, 'completeTask', this.todoListView.completeTask);
+    After(this.useCase, 'uncompleteTask', this.todoListView.uncompleteTask);
+    After(this.useCase, 'editTaskContent', this.todoListView.editTaskContent);
+    After(this.todoListView, 'taskContentDoubleClicked', this.useCase.editTaskContent);
+    After(this.useCase, 'updateTaskContent', this.todoListView.updateTaskContent);
+    After(this.todoListView, 'enterKeyPressedWhenEditing', this.useCase.updateTaskContent);
     AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
-      return _this.gui.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
+      return _this.todoListView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
     });
-    After(this.gui, 'allTasksClicked', function() {
+    After(this.todoListView, 'allTasksClicked', function() {
       return _this.useCase.showAll();
     });
-    After(this.gui, 'completedTasksClicked', function() {
+    After(this.todoListView, 'completedTasksClicked', function() {
       return _this.useCase.showCompleted();
     });
-    After(this.gui, 'remainingTasksClicked', function() {
+    After(this.todoListView, 'remainingTasksClicked', function() {
       return _this.useCase.showActive();
     });
     After(this.useCase, 'showActive', function() {
-      return _this.gui.showTasks(_this.useCase.remainingTasks());
+      return _this.todoListView.showTasks(_this.useCase.remainingTasks());
     });
     After(this.useCase, 'showCompleted', function() {
-      return _this.gui.showTasks(_this.useCase.completedTasks());
+      return _this.todoListView.showTasks(_this.useCase.completedTasks());
     });
-    After(this.gui, 'clearCompletedClicked', function() {
+    After(this.todoListView, 'clearCompletedClicked', function() {
       return _this.useCase.clearCompleted();
     });
     LogAll(this.useCase, "UseCase");
-    LogAll(this.gui, "Gui");
+    LogAll(this.todoListView, "TodoListView");
   }
 
   return WebGlue;

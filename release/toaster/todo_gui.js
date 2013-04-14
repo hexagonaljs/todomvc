@@ -1,9 +1,9 @@
-var WebGui,
+var TodoListView,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-WebGui = (function() {
+TodoListView = (function() {
 
-  function WebGui() {
+  function TodoListView() {
     this.clearCompletedClicked = __bind(this.clearCompletedClicked, this);
 
     this.remainingTasksClicked = __bind(this.remainingTasksClicked, this);
@@ -62,7 +62,7 @@ WebGui = (function() {
     this.taskElements = [];
   }
 
-  WebGui.prototype.createElementFor = function(task, templateId) {
+  TodoListView.prototype.createElementFor = function(task, templateId) {
     var data, element, html, source, template;
     source = $(templateId).html();
     template = Handlebars.compile(source);
@@ -74,7 +74,7 @@ WebGui = (function() {
     return element = $(html);
   };
 
-  WebGui.prototype.addNewTask = function(task) {
+  TodoListView.prototype.addNewTask = function(task) {
     var element,
       _this = this;
     element = this.createElementFor(task, "#todo-template");
@@ -92,21 +92,21 @@ WebGui = (function() {
     });
   };
 
-  WebGui.prototype.findTaskElement = function(task) {
+  TodoListView.prototype.findTaskElement = function(task) {
     return this.taskElements.find(function(taskElement) {
       return taskElement.task === task;
     });
   };
 
-  WebGui.prototype.taskContentDoubleClicked = function(task) {};
+  TodoListView.prototype.taskContentDoubleClicked = function(task) {};
 
-  WebGui.prototype.deleteTaskClicked = function(task) {};
+  TodoListView.prototype.deleteTaskClicked = function(task) {};
 
-  WebGui.prototype.deleteTask = function(task) {
+  TodoListView.prototype.deleteTask = function(task) {
     return this.findTaskElement(task).remove();
   };
 
-  WebGui.prototype.editTaskContent = function(task) {
+  TodoListView.prototype.editTaskContent = function(task) {
     var element,
       _this = this;
     element = this.findTaskElement(task);
@@ -116,7 +116,7 @@ WebGui = (function() {
     });
   };
 
-  WebGui.prototype.editingKeyPressed = function(event, element) {
+  TodoListView.prototype.editingKeyPressed = function(event, element) {
     var ENTER_KEY_CODE;
     ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
@@ -124,30 +124,30 @@ WebGui = (function() {
     }
   };
 
-  WebGui.prototype.enterKeyPressedWhenEditing = function(task, newContent) {};
+  TodoListView.prototype.enterKeyPressedWhenEditing = function(task, newContent) {};
 
-  WebGui.prototype.updateTaskContent = function(task, content) {
+  TodoListView.prototype.updateTaskContent = function(task, content) {
     var element;
     element = this.findTaskElement(task);
     element.removeClass("editing").find("input.edit").hide();
     return element.find("label").html(content);
   };
 
-  WebGui.prototype.completeTask = function(task) {
+  TodoListView.prototype.completeTask = function(task) {
     var element;
     element = this.findTaskElement(task);
     element.addClass("completed");
     return element.find("input.toggle").attr("checked", "checked");
   };
 
-  WebGui.prototype.uncompleteTask = function(task) {
+  TodoListView.prototype.uncompleteTask = function(task) {
     var element;
     element = this.findTaskElement(task);
     element.removeClass("completed");
     return element.find("input .toggle").attr("checked", "");
   };
 
-  WebGui.prototype.showTasks = function(tasks) {
+  TodoListView.prototype.showTasks = function(tasks) {
     var task, _i, _len, _results;
     $("#todo-list").html("");
     _results = [];
@@ -158,11 +158,11 @@ WebGui = (function() {
     return _results;
   };
 
-  WebGui.prototype.completeAllTasksClicked = function() {};
+  TodoListView.prototype.completeAllTasksClicked = function() {};
 
-  WebGui.prototype.toggleTaskCompletionClicked = function(task) {};
+  TodoListView.prototype.toggleTaskCompletionClicked = function(task) {};
 
-  WebGui.prototype.keyPressed = function(event) {
+  TodoListView.prototype.keyPressed = function(event) {
     var ENTER_KEY_CODE;
     ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
@@ -171,17 +171,17 @@ WebGui = (function() {
     }
   };
 
-  WebGui.prototype.clearNewTodoTextBox = function() {
+  TodoListView.prototype.clearNewTodoTextBox = function() {
     return $("#new-todo").val("");
   };
 
-  WebGui.prototype.newTodoContent = function() {
+  TodoListView.prototype.newTodoContent = function() {
     return $("#new-todo").val();
   };
 
-  WebGui.prototype.enterKeyPressed = function(content) {};
+  TodoListView.prototype.enterKeyPressed = function(content) {};
 
-  WebGui.prototype.showStats = function(remaining, completed) {
+  TodoListView.prototype.showStats = function(remaining, completed) {
     var data, element, html, moreThanOne, source, template,
       _this = this;
     source = $("#stats-template").html();
@@ -203,21 +203,20 @@ WebGui = (function() {
     element.find("#completed-tasks").click(function() {
       return _this.completedTasksClicked();
     });
-    console.log("here");
     $("#footer").html(element);
     return $("#clear-completed").click(function() {
       return _this.clearCompletedClicked();
     });
   };
 
-  WebGui.prototype.allTasksClicked = function() {};
+  TodoListView.prototype.allTasksClicked = function() {};
 
-  WebGui.prototype.completedTasksClicked = function() {};
+  TodoListView.prototype.completedTasksClicked = function() {};
 
-  WebGui.prototype.remainingTasksClicked = function() {};
+  TodoListView.prototype.remainingTasksClicked = function() {};
 
-  WebGui.prototype.clearCompletedClicked = function() {};
+  TodoListView.prototype.clearCompletedClicked = function() {};
 
-  return WebGui;
+  return TodoListView;
 
 })();

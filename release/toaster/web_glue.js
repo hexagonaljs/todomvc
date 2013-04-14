@@ -49,9 +49,6 @@ WebGlue = (function() {
     After(this.gui, 'clearCompletedClicked', function() {
       return _this.useCase.clearCompleted();
     });
-    After(this.useCase, 'clearCompleted', function(deletedTasks) {
-      return _this.gui.clearCompleted(deletedTasks);
-    });
     LogAll(this.useCase, "UseCase");
     LogAll(this.gui, "Gui");
   }

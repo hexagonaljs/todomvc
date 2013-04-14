@@ -96,9 +96,3 @@ class WebGui
   completedTasksClicked: =>
   remainingTasksClicked: =>
   clearCompletedClicked: =>
-
-  clearCompleted: (tasks)=>
-    console.log("gui.clearCompleted")
-    tasks.each (task) -> @deleteTask(task)
-
-

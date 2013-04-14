@@ -4,8 +4,6 @@ var WebGui,
 WebGui = (function() {
 
   function WebGui() {
-    this.clearCompleted = __bind(this.clearCompleted, this);
-
     this.clearCompletedClicked = __bind(this.clearCompletedClicked, this);
 
     this.remainingTasksClicked = __bind(this.remainingTasksClicked, this);
@@ -219,13 +217,6 @@ WebGui = (function() {
   WebGui.prototype.remainingTasksClicked = function() {};
 
   WebGui.prototype.clearCompletedClicked = function() {};
-
-  WebGui.prototype.clearCompleted = function(tasks) {
-    console.log("gui.clearCompleted");
-    return tasks.each(function(task) {
-      return this.deleteTask(task);
-    });
-  };
 
   return WebGui;
 

@@ -46,7 +46,6 @@ class WebGlue
     After(@useCase, 'showCompleted', => @gui.showTasks(@useCase.completedTasks()))
 
     After(@gui, 'clearCompletedClicked', => @useCase.clearCompleted())
-    After(@useCase, 'clearCompleted', (deletedTasks) => @gui.clearCompleted(deletedTasks))
 
     LogAll(@useCase, "UseCase")
     LogAll(@gui, "Gui")

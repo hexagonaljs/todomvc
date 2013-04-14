@@ -53,6 +53,9 @@ WebGlue = (function() {
 
   WebGlue.prototype.statsViewGlue = function() {
     var _this = this;
+    AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
+      return _this.statsView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
+    });
     After(this.statsView, 'allTasksClicked', function() {
       return _this.useCase.showAll();
     });
@@ -71,11 +74,8 @@ WebGlue = (function() {
     After(this.useCase, 'showAll', function() {
       return _this.statsView.selectAll();
     });
-    After(this.useCase, 'showActive', function() {
+    return After(this.useCase, 'showActive', function() {
       return _this.statsView.selectActive();
-    });
-    return AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
-      return _this.statsView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
     });
   };
 

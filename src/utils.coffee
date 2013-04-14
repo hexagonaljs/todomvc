@@ -12,11 +12,11 @@ _.defaults this,
     for methodName in methodNames
       After(object, methodName, adviseMethod)
 
-  LogAll: (object) ->
+  LogAll: (object, prefix="") ->
     for own key, value of object
       if _.isFunction(value)
         do (key) ->
-          Before(object, key, -> console.log("calling: #{key}"))
+          Before(object, key, -> console.log("#{prefix}: #{key}"))
 
   AutoBind: (gui, useCase) ->
     for key, value of gui

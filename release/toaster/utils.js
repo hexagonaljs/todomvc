@@ -22,8 +22,11 @@ _.defaults(this, {
     }
     return _results;
   },
-  LogAll: function(object) {
+  LogAll: function(object, prefix) {
     var key, value, _results;
+    if (prefix == null) {
+      prefix = "";
+    }
     _results = [];
     for (key in object) {
       if (!__hasProp.call(object, key)) continue;
@@ -31,7 +34,7 @@ _.defaults(this, {
       if (_.isFunction(value)) {
         _results.push((function(key) {
           return Before(object, key, function() {
-            return console.log("calling: " + key);
+            return console.log("" + prefix + ": " + key);
           });
         })(key));
       } else {

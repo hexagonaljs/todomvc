@@ -52,8 +52,8 @@ WebGlue = (function() {
     After(this.useCase, 'clearCompleted', function(deletedTasks) {
       return _this.gui.clearCompleted(deletedTasks);
     });
-    LogAll(this.useCase);
-    LogAll(this.gui);
+    LogAll(this.useCase, "UseCase");
+    LogAll(this.gui, "Gui");
   }
 
   return WebGlue;

@@ -11,38 +11,45 @@ WebGlue = (function() {
     this.storage = storage;
     this.statsViewGlue = __bind(this.statsViewGlue, this);
 
+    this.todoListViewGlue = __bind(this.todoListViewGlue, this);
+
+    this.todoListViewGlue();
     this.statsViewGlue();
-    AutoBind(this.todoListView, this.useCase);
-    After(this.todoListView, 'enterKeyPressed', function(content) {
-      return _this.useCase.addNewTask(new Task(content));
-    });
-    After(this.useCase, 'addNewTask', this.todoListView.addNewTask);
     Before(this.useCase, 'showAll', function() {
       return _this.useCase.setInitialTasks(_this.storage.getTasks());
     });
-    After(this.useCase, 'showAll', function() {
-      return _this.todoListView.showTasks(_this.useCase.todoTasks);
-    });
     AfterAll(this.useCase, ['addNewTask', 'updateTaskContent', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion'], function() {
       return _this.storage.set("tasks", _this.useCase.todoTasks);
-    });
-    After(this.useCase, 'deleteTask', this.todoListView.deleteTask);
-    After(this.useCase, 'completeTask', this.todoListView.completeTask);
-    After(this.useCase, 'uncompleteTask', this.todoListView.uncompleteTask);
-    After(this.useCase, 'editTaskContent', this.todoListView.editTaskContent);
-    After(this.todoListView, 'taskContentDoubleClicked', this.useCase.editTaskContent);
-    After(this.useCase, 'updateTaskContent', this.todoListView.updateTaskContent);
-    After(this.todoListView, 'enterKeyPressedWhenEditing', this.useCase.updateTaskContent);
-    After(this.useCase, 'showActive', function() {
-      return _this.todoListView.showTasks(_this.useCase.remainingTasks());
-    });
-    After(this.useCase, 'showCompleted', function() {
-      return _this.todoListView.showTasks(_this.useCase.completedTasks());
     });
     LogAll(this.useCase, "UseCase");
     LogAll(this.todoListView, "TodoListView");
     LogAll(this.statsView, "StatsView");
   }
+
+  WebGlue.prototype.todoListViewGlue = function() {
+    var _this = this;
+    AutoBind(this.todoListView, this.useCase);
+    After(this.todoListView, 'enterKeyPressed', function(content) {
+      return _this.useCase.addNewTask(new Task(content));
+    });
+    After(this.todoListView, 'taskContentDoubleClicked', this.useCase.editTaskContent);
+    After(this.todoListView, 'enterKeyPressedWhenEditing', this.useCase.updateTaskContent);
+    After(this.useCase, 'addNewTask', this.todoListView.addNewTask);
+    After(this.useCase, 'showAll', function() {
+      return _this.todoListView.showTasks(_this.useCase.todoTasks);
+    });
+    After(this.useCase, 'deleteTask', this.todoListView.deleteTask);
+    After(this.useCase, 'completeTask', this.todoListView.completeTask);
+    After(this.useCase, 'uncompleteTask', this.todoListView.uncompleteTask);
+    After(this.useCase, 'editTaskContent', this.todoListView.editTaskContent);
+    After(this.useCase, 'updateTaskContent', this.todoListView.updateTaskContent);
+    After(this.useCase, 'showActive', function() {
+      return _this.todoListView.showTasks(_this.useCase.remainingTasks());
+    });
+    return After(this.useCase, 'showCompleted', function() {
+      return _this.todoListView.showTasks(_this.useCase.completedTasks());
+    });
+  };
 
   WebGlue.prototype.statsViewGlue = function() {
     var _this = this;

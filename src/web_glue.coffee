@@ -1,11 +1,8 @@
 class WebGlue
   constructor: (@useCase, @todoListView, @statsView, @storage)->
+    @todoListViewGlue()
     @statsViewGlue()
-    AutoBind(@todoListView, @useCase)
-    After(@todoListView, 'enterKeyPressed', (content) => @useCase.addNewTask(new Task(content)))
-    After(@useCase, 'addNewTask', @todoListView.addNewTask)
     Before(@useCase, 'showAll',  => @useCase.setInitialTasks(@storage.getTasks()))
-    After(@useCase, 'showAll',  => @todoListView.showTasks(@useCase.todoTasks))
     AfterAll(@useCase,
             [
              'addNewTask',
@@ -16,26 +13,25 @@ class WebGlue
             ],
             => @storage.set("tasks", @useCase.todoTasks))
 
-    After(@useCase, 'deleteTask', @todoListView.deleteTask)
-
-
-    After(@useCase, 'completeTask', @todoListView.completeTask)
-    After(@useCase, 'uncompleteTask', @todoListView.uncompleteTask)
-
-
-    After(@useCase, 'editTaskContent', @todoListView.editTaskContent)
-    After(@todoListView, 'taskContentDoubleClicked', @useCase.editTaskContent)
-
-    After(@useCase, 'updateTaskContent', @todoListView.updateTaskContent)
-    After(@todoListView, 'enterKeyPressedWhenEditing', @useCase.updateTaskContent)
-
-
-    After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
-    After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
-
     LogAll(@useCase, "UseCase")
     LogAll(@todoListView, "TodoListView")
     LogAll(@statsView, "StatsView")
+
+  todoListViewGlue: =>
+    AutoBind(@todoListView, @useCase)
+    After(@todoListView, 'enterKeyPressed', (content) => @useCase.addNewTask(new Task(content)))
+    After(@todoListView, 'taskContentDoubleClicked', @useCase.editTaskContent)
+    After(@todoListView, 'enterKeyPressedWhenEditing', @useCase.updateTaskContent)
+
+    After(@useCase, 'addNewTask', @todoListView.addNewTask)
+    After(@useCase, 'showAll',  => @todoListView.showTasks(@useCase.todoTasks))
+    After(@useCase, 'deleteTask', @todoListView.deleteTask)
+    After(@useCase, 'completeTask', @todoListView.completeTask)
+    After(@useCase, 'uncompleteTask', @todoListView.uncompleteTask)
+    After(@useCase, 'editTaskContent', @todoListView.editTaskContent)
+    After(@useCase, 'updateTaskContent', @todoListView.updateTaskContent)
+    After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
+    After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
 
   statsViewGlue: =>
     After(@statsView, 'allTasksClicked', => @useCase.showAll())

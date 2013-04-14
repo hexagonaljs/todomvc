@@ -1,5 +1,5 @@
 class WebGlue
-  constructor: (@useCase, @todoListView, @statsView, @storage)->
+  constructor: (@useCase, @todoListView, @statsView, @storage, @routingAdapter)->
     @todoListViewGlue()
     @statsViewGlue()
     Before(@useCase, 'showAll',  => @useCase.setInitialTasks(@storage.getTasks()))
@@ -16,6 +16,7 @@ class WebGlue
     LogAll(@useCase, "UseCase")
     LogAll(@todoListView, "TodoListView")
     LogAll(@statsView, "StatsView")
+    LogAll(@routingAdapter, "Router")
 
   todoListViewGlue: =>
     AutoBind(@todoListView, @useCase)

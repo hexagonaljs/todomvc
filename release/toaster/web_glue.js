@@ -3,12 +3,13 @@ var WebGlue,
 
 WebGlue = (function() {
 
-  function WebGlue(useCase, todoListView, statsView, storage) {
+  function WebGlue(useCase, todoListView, statsView, storage, routingAdapter) {
     var _this = this;
     this.useCase = useCase;
     this.todoListView = todoListView;
     this.statsView = statsView;
     this.storage = storage;
+    this.routingAdapter = routingAdapter;
     this.statsViewGlue = __bind(this.statsViewGlue, this);
 
     this.todoListViewGlue = __bind(this.todoListViewGlue, this);
@@ -24,6 +25,7 @@ WebGlue = (function() {
     LogAll(this.useCase, "UseCase");
     LogAll(this.todoListView, "TodoListView");
     LogAll(this.statsView, "StatsView");
+    LogAll(this.routingAdapter, "Router");
   }
 
   WebGlue.prototype.todoListViewGlue = function() {

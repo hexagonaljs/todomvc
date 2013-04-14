@@ -1,5 +1,6 @@
 class WebGlue
   constructor: (@useCase, @todoListView, @statsView, @storage)->
+    @statsViewGlue()
     AutoBind(@todoListView, @useCase)
     After(@todoListView, 'enterKeyPressed', (content) => @useCase.addNewTask(new Task(content)))
     After(@useCase, 'addNewTask', @todoListView.addNewTask)
@@ -28,6 +29,24 @@ class WebGlue
     After(@useCase, 'updateTaskContent', @todoListView.updateTaskContent)
     After(@todoListView, 'enterKeyPressedWhenEditing', @useCase.updateTaskContent)
 
+
+    After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
+    After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
+
+    LogAll(@useCase, "UseCase")
+    LogAll(@todoListView, "TodoListView")
+    LogAll(@statsView, "StatsView")
+
+  statsViewGlue: =>
+    After(@statsView, 'allTasksClicked', => @useCase.showAll())
+    After(@statsView, 'completedTasksClicked', => @useCase.showCompleted())
+    After(@statsView, 'remainingTasksClicked', => @useCase.showActive())
+    After(@statsView, 'clearCompletedClicked', => @useCase.clearCompleted())
+
+    After(@useCase, 'showCompleted', => @statsView.selectCompleted())
+    After(@useCase, 'showAll', => @statsView.selectAll())
+
+    After(@useCase, 'showActive', => @statsView.selectActive())
     AfterAll(@useCase,
       [
         'addNewTask',
@@ -38,18 +57,3 @@ class WebGlue
       ],
         => @statsView.showStats(@useCase.remainingTasks().length, @useCase.completedTasks().length))
 
-    After(@statsView, 'allTasksClicked', => @useCase.showAll())
-    After(@statsView, 'completedTasksClicked', => @useCase.showCompleted())
-    After(@statsView, 'remainingTasksClicked', => @useCase.showActive())
-
-    After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
-    After(@useCase, 'showActive', => @statsView.selectActive())
-    After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
-    After(@useCase, 'showCompleted', => @statsView.selectCompleted())
-    After(@useCase, 'showAll', => @statsView.selectAll())
-
-    After(@statsView, 'clearCompletedClicked', => @useCase.clearCompleted())
-
-    LogAll(@useCase, "UseCase")
-    LogAll(@todoListView, "TodoListView")
-    LogAll(@statsView, "StatsView")

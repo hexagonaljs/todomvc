@@ -1,4 +1,5 @@
-var WebGlue;
+var WebGlue,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 WebGlue = (function() {
 
@@ -8,6 +9,9 @@ WebGlue = (function() {
     this.todoListView = todoListView;
     this.statsView = statsView;
     this.storage = storage;
+    this.statsViewGlue = __bind(this.statsViewGlue, this);
+
+    this.statsViewGlue();
     AutoBind(this.todoListView, this.useCase);
     After(this.todoListView, 'enterKeyPressed', function(content) {
       return _this.useCase.addNewTask(new Task(content));
@@ -29,9 +33,19 @@ WebGlue = (function() {
     After(this.todoListView, 'taskContentDoubleClicked', this.useCase.editTaskContent);
     After(this.useCase, 'updateTaskContent', this.todoListView.updateTaskContent);
     After(this.todoListView, 'enterKeyPressedWhenEditing', this.useCase.updateTaskContent);
-    AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
-      return _this.statsView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
+    After(this.useCase, 'showActive', function() {
+      return _this.todoListView.showTasks(_this.useCase.remainingTasks());
     });
+    After(this.useCase, 'showCompleted', function() {
+      return _this.todoListView.showTasks(_this.useCase.completedTasks());
+    });
+    LogAll(this.useCase, "UseCase");
+    LogAll(this.todoListView, "TodoListView");
+    LogAll(this.statsView, "StatsView");
+  }
+
+  WebGlue.prototype.statsViewGlue = function() {
+    var _this = this;
     After(this.statsView, 'allTasksClicked', function() {
       return _this.useCase.showAll();
     });
@@ -41,14 +55,8 @@ WebGlue = (function() {
     After(this.statsView, 'remainingTasksClicked', function() {
       return _this.useCase.showActive();
     });
-    After(this.useCase, 'showActive', function() {
-      return _this.todoListView.showTasks(_this.useCase.remainingTasks());
-    });
-    After(this.useCase, 'showActive', function() {
-      return _this.statsView.selectActive();
-    });
-    After(this.useCase, 'showCompleted', function() {
-      return _this.todoListView.showTasks(_this.useCase.completedTasks());
+    After(this.statsView, 'clearCompletedClicked', function() {
+      return _this.useCase.clearCompleted();
     });
     After(this.useCase, 'showCompleted', function() {
       return _this.statsView.selectCompleted();
@@ -56,13 +64,13 @@ WebGlue = (function() {
     After(this.useCase, 'showAll', function() {
       return _this.statsView.selectAll();
     });
-    After(this.statsView, 'clearCompletedClicked', function() {
-      return _this.useCase.clearCompleted();
+    After(this.useCase, 'showActive', function() {
+      return _this.statsView.selectActive();
     });
-    LogAll(this.useCase, "UseCase");
-    LogAll(this.todoListView, "TodoListView");
-    LogAll(this.statsView, "StatsView");
-  }
+    return AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
+      return _this.statsView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
+    });
+  };
 
   return WebGlue;
 

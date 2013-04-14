@@ -43,7 +43,10 @@ class WebGlue
     After(@statsView, 'remainingTasksClicked', => @useCase.showActive())
 
     After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
+    After(@useCase, 'showActive', => @statsView.selectActive())
     After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
+    After(@useCase, 'showCompleted', => @statsView.selectCompleted())
+    After(@useCase, 'showAll', => @statsView.selectAll())
 
     After(@statsView, 'clearCompletedClicked', => @useCase.clearCompleted())
 

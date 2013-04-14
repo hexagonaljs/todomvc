@@ -93,6 +93,22 @@ class StatsView
     $("#footer").html(element)
     $("#clear-completed").click => @clearCompletedClicked()
 
+  clearPreviousSelection: =>
+    ["#all-tasks", "#active-tasks", "#completed-tasks"].each (el) -> $(el).removeClass("selected")
+
+  selectAll: =>
+    @clearPreviousSelection()
+    $("#all-tasks").addClass("selected")
+
+  selectActive: =>
+    @clearPreviousSelection()
+    $("#active-tasks").addClass("selected")
+
+  selectCompleted: =>
+    @clearPreviousSelection()
+    $("#completed-tasks").addClass("selected")
+
+
   allTasksClicked: =>
   completedTasksClicked: =>
   remainingTasksClicked: =>

@@ -186,6 +186,14 @@ StatsView = (function() {
 
     this.allTasksClicked = __bind(this.allTasksClicked, this);
 
+    this.selectCompleted = __bind(this.selectCompleted, this);
+
+    this.selectActive = __bind(this.selectActive, this);
+
+    this.selectAll = __bind(this.selectAll, this);
+
+    this.clearPreviousSelection = __bind(this.clearPreviousSelection, this);
+
     this.showStats = __bind(this.showStats, this);
 
   }
@@ -216,6 +224,27 @@ StatsView = (function() {
     return $("#clear-completed").click(function() {
       return _this.clearCompletedClicked();
     });
+  };
+
+  StatsView.prototype.clearPreviousSelection = function() {
+    return ["#all-tasks", "#active-tasks", "#completed-tasks"].each(function(el) {
+      return $(el).removeClass("selected");
+    });
+  };
+
+  StatsView.prototype.selectAll = function() {
+    this.clearPreviousSelection();
+    return $("#all-tasks").addClass("selected");
+  };
+
+  StatsView.prototype.selectActive = function() {
+    this.clearPreviousSelection();
+    return $("#active-tasks").addClass("selected");
+  };
+
+  StatsView.prototype.selectCompleted = function() {
+    this.clearPreviousSelection();
+    return $("#completed-tasks").addClass("selected");
   };
 
   StatsView.prototype.allTasksClicked = function() {};

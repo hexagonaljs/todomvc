@@ -44,8 +44,17 @@ WebGlue = (function() {
     After(this.useCase, 'showActive', function() {
       return _this.todoListView.showTasks(_this.useCase.remainingTasks());
     });
+    After(this.useCase, 'showActive', function() {
+      return _this.statsView.selectActive();
+    });
     After(this.useCase, 'showCompleted', function() {
       return _this.todoListView.showTasks(_this.useCase.completedTasks());
+    });
+    After(this.useCase, 'showCompleted', function() {
+      return _this.statsView.selectCompleted();
+    });
+    After(this.useCase, 'showAll', function() {
+      return _this.statsView.selectAll();
     });
     After(this.statsView, 'clearCompletedClicked', function() {
       return _this.useCase.clearCompleted();

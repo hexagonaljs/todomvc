@@ -2,10 +2,11 @@ var WebGlue;
 
 WebGlue = (function() {
 
-  function WebGlue(useCase, todoListView, storage) {
+  function WebGlue(useCase, todoListView, statsView, storage) {
     var _this = this;
     this.useCase = useCase;
     this.todoListView = todoListView;
+    this.statsView = statsView;
     this.storage = storage;
     AutoBind(this.todoListView, this.useCase);
     After(this.todoListView, 'enterKeyPressed', function(content) {
@@ -29,15 +30,15 @@ WebGlue = (function() {
     After(this.useCase, 'updateTaskContent', this.todoListView.updateTaskContent);
     After(this.todoListView, 'enterKeyPressedWhenEditing', this.useCase.updateTaskContent);
     AfterAll(this.useCase, ['addNewTask', 'deleteTask', 'completeAllTasks', 'toggleTaskCompletion', 'showAll'], function() {
-      return _this.todoListView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
+      return _this.statsView.showStats(_this.useCase.remainingTasks().length, _this.useCase.completedTasks().length);
     });
-    After(this.todoListView, 'allTasksClicked', function() {
+    After(this.statsView, 'allTasksClicked', function() {
       return _this.useCase.showAll();
     });
-    After(this.todoListView, 'completedTasksClicked', function() {
+    After(this.statsView, 'completedTasksClicked', function() {
       return _this.useCase.showCompleted();
     });
-    After(this.todoListView, 'remainingTasksClicked', function() {
+    After(this.statsView, 'remainingTasksClicked', function() {
       return _this.useCase.showActive();
     });
     After(this.useCase, 'showActive', function() {
@@ -46,11 +47,12 @@ WebGlue = (function() {
     After(this.useCase, 'showCompleted', function() {
       return _this.todoListView.showTasks(_this.useCase.completedTasks());
     });
-    After(this.todoListView, 'clearCompletedClicked', function() {
+    After(this.statsView, 'clearCompletedClicked', function() {
       return _this.useCase.clearCompleted();
     });
     LogAll(this.useCase, "UseCase");
     LogAll(this.todoListView, "TodoListView");
+    LogAll(this.statsView, "StatsView");
   }
 
   return WebGlue;

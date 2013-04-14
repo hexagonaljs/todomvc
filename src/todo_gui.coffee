@@ -78,6 +78,8 @@ class TodoListView
 
   enterKeyPressed: (content) =>
 
+
+class StatsView
   showStats: (remaining, completed) =>
     source = $("#stats-template").html()
     template = Handlebars.compile(source)

@@ -1,5 +1,5 @@
 class WebGlue
-  constructor: (@useCase, @todoListView, @storage)->
+  constructor: (@useCase, @todoListView, @statsView, @storage)->
     AutoBind(@todoListView, @useCase)
     After(@todoListView, 'enterKeyPressed', (content) => @useCase.addNewTask(new Task(content)))
     After(@useCase, 'addNewTask', @todoListView.addNewTask)
@@ -36,16 +36,17 @@ class WebGlue
         'toggleTaskCompletion',
         'showAll',
       ],
-        => @todoListView.showStats(@useCase.remainingTasks().length, @useCase.completedTasks().length))
+        => @statsView.showStats(@useCase.remainingTasks().length, @useCase.completedTasks().length))
 
-    After(@todoListView, 'allTasksClicked', => @useCase.showAll())
-    After(@todoListView, 'completedTasksClicked', => @useCase.showCompleted())
-    After(@todoListView, 'remainingTasksClicked', => @useCase.showActive())
+    After(@statsView, 'allTasksClicked', => @useCase.showAll())
+    After(@statsView, 'completedTasksClicked', => @useCase.showCompleted())
+    After(@statsView, 'remainingTasksClicked', => @useCase.showActive())
 
     After(@useCase, 'showActive', => @todoListView.showTasks(@useCase.remainingTasks()))
     After(@useCase, 'showCompleted', => @todoListView.showTasks(@useCase.completedTasks()))
 
-    After(@todoListView, 'clearCompletedClicked', => @useCase.clearCompleted())
+    After(@statsView, 'clearCompletedClicked', => @useCase.clearCompleted())
 
     LogAll(@useCase, "UseCase")
     LogAll(@todoListView, "TodoListView")
+    LogAll(@statsView, "StatsView")

@@ -1,19 +1,9 @@
-var TodoListView,
+var StatsView, TodoListView,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 TodoListView = (function() {
 
   function TodoListView() {
-    this.clearCompletedClicked = __bind(this.clearCompletedClicked, this);
-
-    this.remainingTasksClicked = __bind(this.remainingTasksClicked, this);
-
-    this.completedTasksClicked = __bind(this.completedTasksClicked, this);
-
-    this.allTasksClicked = __bind(this.allTasksClicked, this);
-
-    this.showStats = __bind(this.showStats, this);
-
     this.enterKeyPressed = __bind(this.enterKeyPressed, this);
 
     this.newTodoContent = __bind(this.newTodoContent, this);
@@ -181,7 +171,26 @@ TodoListView = (function() {
 
   TodoListView.prototype.enterKeyPressed = function(content) {};
 
-  TodoListView.prototype.showStats = function(remaining, completed) {
+  return TodoListView;
+
+})();
+
+StatsView = (function() {
+
+  function StatsView() {
+    this.clearCompletedClicked = __bind(this.clearCompletedClicked, this);
+
+    this.remainingTasksClicked = __bind(this.remainingTasksClicked, this);
+
+    this.completedTasksClicked = __bind(this.completedTasksClicked, this);
+
+    this.allTasksClicked = __bind(this.allTasksClicked, this);
+
+    this.showStats = __bind(this.showStats, this);
+
+  }
+
+  StatsView.prototype.showStats = function(remaining, completed) {
     var data, element, html, moreThanOne, source, template,
       _this = this;
     source = $("#stats-template").html();
@@ -209,14 +218,14 @@ TodoListView = (function() {
     });
   };
 
-  TodoListView.prototype.allTasksClicked = function() {};
+  StatsView.prototype.allTasksClicked = function() {};
 
-  TodoListView.prototype.completedTasksClicked = function() {};
+  StatsView.prototype.completedTasksClicked = function() {};
 
-  TodoListView.prototype.remainingTasksClicked = function() {};
+  StatsView.prototype.remainingTasksClicked = function() {};
 
-  TodoListView.prototype.clearCompletedClicked = function() {};
+  StatsView.prototype.clearCompletedClicked = function() {};
 
-  return TodoListView;
+  return StatsView;
 
 })();

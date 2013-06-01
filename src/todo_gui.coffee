@@ -14,8 +14,9 @@ class TodoListView
   addNewTask: (task) =>
     element = @createElementFor(task, "#todo-template")
     element.task = task
-    @taskElements.push(element)
-    $("#todo-list").prepend(element)
+    if element.task.content != ""
+      @taskElements.push(element)
+      $("#todo-list").prepend(element)
 
     element.find(".destroy").click( => @deleteTaskClicked(task))
     element.find(".toggle").click( => @toggleTaskCompletionClicked(task))

@@ -15,7 +15,8 @@ class CompleteTasksUseCase
   showCompleted: =>
 
   addNewTask: (task) =>
-    @todoTasks.push(task)
+    if task.content != ""
+      @todoTasks.push(task)
 
   editTaskContent: (task) =>
 

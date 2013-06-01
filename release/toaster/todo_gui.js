@@ -69,8 +69,10 @@ TodoListView = (function() {
       _this = this;
     element = this.createElementFor(task, "#todo-template");
     element.task = task;
-    this.taskElements.push(element);
-    $("#todo-list").append(element);
+    if (element.task.content !== "") {
+      this.taskElements.push(element);
+      $("#todo-list").prepend(element);
+    }
     element.find(".destroy").click(function() {
       return _this.deleteTaskClicked(task);
     });

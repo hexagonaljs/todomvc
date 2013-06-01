@@ -63,7 +63,9 @@ CompleteTasksUseCase = (function() {
   CompleteTasksUseCase.prototype.showCompleted = function() {};
 
   CompleteTasksUseCase.prototype.addNewTask = function(task) {
-    return this.todoTasks.push(task);
+    if (task.content !== "") {
+      return this.todoTasks.push(task);
+    }
   };
 
   CompleteTasksUseCase.prototype.editTaskContent = function(task) {};

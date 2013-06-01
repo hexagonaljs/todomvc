@@ -15,7 +15,7 @@ class TodoListView
     element = @createElementFor(task, "#todo-template")
     element.task = task
     @taskElements.push(element)
-    $("#todo-list").append(element)
+    $("#todo-list").prepend(element)
 
     element.find(".destroy").click( => @deleteTaskClicked(task))
     element.find(".toggle").click( => @toggleTaskCompletionClicked(task))
@@ -83,6 +83,7 @@ class StatsView
   showStats: (remaining, completed) =>
     source = $("#stats-template").html()
     template = Handlebars.compile(source)
+	
     moreThanOne = remaining > 1
     data = {remaining: remaining, moreThanOne: moreThanOne, completed: completed}
     html = template(data)

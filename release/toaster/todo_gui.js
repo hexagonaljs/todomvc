@@ -70,7 +70,7 @@ TodoListView = (function() {
     element = this.createElementFor(task, "#todo-template");
     element.task = task;
     this.taskElements.push(element);
-    $("#todo-list").append(element);
+    $("#todo-list").prepend(element);
     element.find(".destroy").click(function() {
       return _this.deleteTaskClicked(task);
     });
